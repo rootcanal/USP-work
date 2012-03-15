@@ -1,0 +1,12 @@
+int open_audio(void);
+void close_audio(void);
+int read_audio(char *buffer, int maxcnt);
+int write_audio(char *buffer, int length);
+int get_record_buffer_size(void) ;
+int play_file(char *filename);
+int record_file(char *filename, int seconds);
+int get_record_sample_rate(void);
+int get_play_buffer_size(void);
+int get_play_sample_rate(void);
+int set_play_volume(double volume);
+int set_record_volume(double volume);

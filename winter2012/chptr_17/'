@@ -1,0 +1,36 @@
+#include "ntpvm.h"
+
+int main(int argc, char **argv){
+	int comp_id, task_id, length, pipefd[2], child;
+	packet_t type;
+	unsigned char buf[MAX_PACKET_SIZE];
+
+	if(getpacket(STDIN_FILENO, &comp_id, &task_id, &type,
+               &length, buf)) {
+		perror("wat getpacket");
+		return -1;
+	}
+	if(type != NEWTASK){
+		fprintf(stderr, "nota newtask wat\n");
+		return -1;
+	}
+	if(pipe(pipefd) == -1){
+		perror("pipe");
+		return -1;
+	}
+	if((child = fork()) == -1){
+		perror("fork");
+		return -1;
+	}
+	if(!child){
+		if(dup2(pipefd[0], STDIN_FILENO)){
+			perror("child failed on stdindup");
+			return -1;
+		}
+		if(dup2(pipefd[1], STDOUT_FILENO)){
+			perror("child failed on stdindup");
+			return -1;
+		}
+
+
+}
